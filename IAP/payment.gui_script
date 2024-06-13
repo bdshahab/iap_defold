@@ -9,7 +9,7 @@ You can test the program by activating the "test_IAP" function.
 	local TESTING = false
 	local PRICE_TEST_IS_OK = false
 	local BUY_CLICKED = false
-	local KEY_DATA_SITE = "https://raw.githubusercontent.com/bdshahab/in-app-purchasing-by-crypto/main/key_data.txt"
+	local KEY_DATA_SITE = "https://raw.githubusercontent.com/bdshahab/iap_defold/main/key_data.txt"
 	-- updatable key data
 	local IAP_VERSION = "3"
 	-- To get the current Date & Time
@@ -352,7 +352,7 @@ You can test the program by activating the "test_IAP" function.
 				get_date_time()
 			end
 		else
-			get_web_content_from("https://raw.githubusercontent.com/bdshahab/in-app-purchasing-by-crypto/main/","default%20prices/",selected_payment:gsub(" ", "%%20"),".txt", http_default_price_function)
+			get_web_content_from("https://raw.githubusercontent.com/bdshahab/iap_defold/main/","default%20prices/",selected_payment:gsub(" ", "%%20"),".txt", http_default_price_function)
 		end
 	end
 
