@@ -1,6 +1,6 @@
 3
-https://www.unixtimestamp.com
- (%d%d:%d%d:%d%d) UTC</td>
+https://unixtime.org
+ (%d%d:%d%d:%d%d) GMT</td><td>
 %a+, (%d+ %a+ %d+) 
 -
  
