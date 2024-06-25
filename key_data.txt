@@ -6,7 +6,7 @@ https://unixtime.org
  
 (%d%d:%d%d:%d%d)
 https://www.coingecko.com/en/coins/
-"price": (%d+,*%d*.%d+),
+<span>$(%d+,*%d*.%d+)</span>
 
 
 ([^%(]+)
