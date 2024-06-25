@@ -1,6 +1,6 @@
 3
-https://time.is/Unix_time
-_tD%((%d+)%)
+https://www.unixtimestamp.com
+ (%d%d:%d%d:%d%d) UTC</td>
 %a+, (%d+ %a+ %d+) 
 -
  
