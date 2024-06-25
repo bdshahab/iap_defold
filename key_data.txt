@@ -5,8 +5,8 @@ https://unixtime.org
 -
  
 (%d%d:%d%d:%d%d)
-https://www.coingecko.com/en/coins/
-<span>$(%d+,*%d*.%d+)</span>
+https://cryptorank.io/price/
+Price $ (%d+,*%d*.%d+), Market Cap
 
 
 ([^%(]+)
