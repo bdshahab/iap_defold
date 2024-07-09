@@ -9,7 +9,7 @@ You can test the program by activating the "test_IAP" function.
 	local TESTING = false
 	local PRICE_TEST_IS_OK = false
 	local BUY_CLICKED = false
-	local GITHUB = "https://raw.githubusercontent.com/bdshahab/iap_defold/main/"
+	local GITHUB = "https://raw.githubusercontent.com/bdshahab/iap_godot/main/"
 	local KEY_DATA_SITE = GITHUB .. "key_data.txt"
 	-- updatable key data
 	local IAP_VERSION = "3"
@@ -103,49 +103,6 @@ You can test the program by activating the "test_IAP" function.
 		get_web_content_from(KEY_DATA_SITE, "", "", "", http_key_data_function)
 	end
 
-	function on_input(self, action_id, action)
-		if handle_clicking(ok_dialogue, action_id, action) then
-			set_color_to_box(ok_dialogue, "ff0000")
-			if dialogue_action == "" then
-				hide_dialogue()
-			elseif dialogue_action == "back" then
-				go_back()
-			end
-		end
-		if gui.get_alpha(dialogue) ~= 0 then
-			return
-		end
-		handle_hovering(back, action)
-		handle_hovering(buy, action)
-		handle_hovering(copy_address, action)
-		handle_hovering(copy_price, action)
-		handle_hovering(paste_txid, action)
-		handle_hovering(help, action)
-		handle_hovering(copy_all, action)
-		if handle_clicking(copy_address, action_id, action) then
-			clipboard.copy(gui.get_text(text_address))
-		end
-		if handle_clicking(copy_price, action_id, action) then
-			clipboard.copy(gui.get_text(text_price))
-		end
-		if handle_clicking(paste_txid, action_id, action) and gui.get_visible(paste_txid) then
-			paste_operation()
-		end
-		if handle_clicking(copy_all, action_id, action) then
-			local contents = selected_payment .. "\n" .. gui.get_text(text_address) .. "\n" .. gui.get_text(text_price) .. "\n" .. gui.get_text(txid)
-			clipboard.copy(contents)
-		end
-		if handle_clicking(back, action_id, action) then
-			go_back()
-		end
-		if handle_clicking(buy, action_id, action) then
-			go_next()
-		end
-		if handle_clicking(help, action_id, action) then
-			show_dialogue("", "help", MESSAGE_HELP)
-		end
-	end
-	
 	function http_key_data_function(self, _, response)
 		connection_status(response.status)
 		local text = response.response
@@ -205,6 +162,49 @@ You can test the program by activating the "test_IAP" function.
 			num = num + 1
 		end
 		get_web_content_from(PRICE_SITE, PRICE_SITE_PREFIX, price_site_middle, PRICE_SITE_SUFFIX, http_price_function)
+	end
+	
+	function on_input(self, action_id, action)
+		if handle_clicking(ok_dialogue, action_id, action) then
+			set_color_to_box(ok_dialogue, "ff0000")
+			if dialogue_action == "" then
+				hide_dialogue()
+			elseif dialogue_action == "back" then
+				go_back()
+			end
+		end
+		if gui.get_alpha(dialogue) ~= 0 then
+			return
+		end
+		handle_hovering(back, action)
+		handle_hovering(buy, action)
+		handle_hovering(copy_address, action)
+		handle_hovering(copy_price, action)
+		handle_hovering(paste_txid, action)
+		handle_hovering(help, action)
+		handle_hovering(copy_all, action)
+		if handle_clicking(copy_address, action_id, action) then
+			clipboard.copy(gui.get_text(text_address))
+		end
+		if handle_clicking(copy_price, action_id, action) then
+			clipboard.copy(gui.get_text(text_price))
+		end
+		if handle_clicking(paste_txid, action_id, action) and gui.get_visible(paste_txid) then
+			paste_operation()
+		end
+		if handle_clicking(copy_all, action_id, action) then
+			local contents = selected_payment .. "\n" .. gui.get_text(text_address) .. "\n" .. gui.get_text(text_price) .. "\n" .. gui.get_text(txid)
+			clipboard.copy(contents)
+		end
+		if handle_clicking(back, action_id, action) then
+			go_back()
+		end
+		if handle_clicking(buy, action_id, action) then
+			go_next()
+		end
+		if handle_clicking(help, action_id, action) then
+			show_dialogue("", "help", MESSAGE_HELP)
+		end
 	end
 
 	local function get_time_in_seconds(text_time)
@@ -514,7 +514,7 @@ You can test the program by activating the "test_IAP" function.
 			if tonumber(text) ~= nil then
 				return tonumber(text)
 			end
-			local pattern = "%d+,*%d*.%d+"  -- This pattern matches any number, including integers and decimals
+			local pattern = "%d+,*%d*.*%d+"  -- This pattern matches any number, including integers and decimals
 			return string.match(text, pattern)
 		else
 			return text
