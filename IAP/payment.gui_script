@@ -9,14 +9,14 @@ You can test the program by activating the "test_IAP" function.
 	local TESTING = false
 	local PRICE_TEST_IS_OK = false
 	local BUY_CLICKED = false
-	local GITHUB = "https://raw.githubusercontent.com/bdshahab/iap_godot/main/"
+	local GITHUB = "https://raw.githubusercontent.com/bdshahab/iap_defold/main/"
 	local KEY_DATA_SITE = GITHUB .. "key_data.txt"
 	-- updatable key data
 	local IAP_VERSION = "3"
 	-- To get the current Date & Time
 	local DATE_TIME_SITE = "https://unixtime.org"
-	local TIME_REGEX = " (%d%d:%d%d:%d%d) GMT</td><td>"
-	local DATE_REGEX = "%a+, (%d+ %a+ %d+) "
+	local TIME_REGEX = "([0-2][0-9]:[0-5][0-9]:[0-5][0-9])"
+	local DATE_REGEX = "%d+-%a+-%d+"
 	local DATE_REMOVE = "-"
 	local DATE_REPLACE = " "
 	local CLOCK_REGEX = "(%d%d:%d%d:%d%d)"
@@ -244,6 +244,21 @@ You can test the program by activating the "test_IAP" function.
 		if registered_txid == "" then
 			first_date = date
 			first_clock = time
+			--TODO
+			if TESTING then
+				print(time)
+				if is_valid_time_format(time) then
+					print("time format is OK")
+				else
+					print("time format is not correct.")
+				end
+				print(date)
+				if is_valid_date_format(date) then
+					print("date format is OK")
+				else
+					print("date format is not correct.")
+				end
+			end
 		else
 			last_date = date
 			last_clock = time
@@ -565,6 +580,40 @@ You can test the program by activating the "test_IAP" function.
 		logo_dialogue = gui.get_node("logo_dialogue")
 	end
 
+
+	function is_valid_time_format(time_str)
+		local _, count = string.gsub(time_str, ":", "")
+		if count ~= 2 then
+			return false
+		end
+
+		local hour, minute, second = string.match(time_str, "(%d+):(%d+):(%d+)")
+		if not (hour and minute and second) then
+			return false
+		end
+
+		local hour, minute, second = tonumber(hour), tonumber(minute), tonumber(second)
+		if hour < 0 or hour > 23 or minute < 0 or minute > 59 or second < 0 or second > 59 then
+			return false
+		end
+
+		return true
+	end
+	
+	function is_valid_date_format(date_str)
+		local date_parts = split_string_by(date_str, " ")
+		if tonumber(date_parts[1]) == nil or tonumber(date_parts[1]) < 1 or tonumber(date_parts[1]) > 31 then
+			return false
+		end
+		if tonumber(date_parts[2]) ~= nil and #date_parts[2] ~= 3 then
+			return false
+		end
+		if #date_parts[3] < 4 then -- #tostring(os.date("%Y"))
+			return false
+		end
+		return true
+	end
+	
 	function test_IAP(value)
 		--[[
 		This is for testing this payment method.
