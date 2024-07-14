@@ -6,7 +6,7 @@ You can test the program by activating the "test_IAP" function.
 	Also, the payment type must be Litecoin.
 	https://litecoinblockexplorer.net/tx/61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e
 	]]
-	local TESTING = false
+	local TESTING = not false
 	local PRICE_TEST_IS_OK = false
 	local DATE_TEST_IS_OK = false
 	local TIME_TEST_IS_OK = false
@@ -247,8 +247,10 @@ You can test the program by activating the "test_IAP" function.
 			first_date = date
 			first_clock = time
 			if TESTING then
+				print("Time format:")
 				print(time)
 				TIME_TEST_IS_OK = is_valid_time_format(time)
+				print("Date format:")
 				print(date)
 				DATE_TEST_IS_OK = is_valid_date_format(date)
 			end
@@ -314,6 +316,9 @@ You can test the program by activating the "test_IAP" function.
 		user_bought = true
 		msg.post("main:/loader#loader", "unload_scene", { scene = "main:/loader#payment" })
 		msg.post("main:/loader#loader", "load_scene", { scene = "main:/loader#bought" })
+		if TESTING then
+			print("TEST was 100% successful.")
+		end
 	end
 
 	function paste_operation()
