@@ -631,7 +631,7 @@ You can test the program by activating the "test_IAP" function.
 		print("PRICE_TEST_IS_OK: " .. tostring(PRICE_TEST_IS_OK))
 		print("registered_address: " .. registered_address)
 		print("registered_txid: " .. registered_txid)
-		print("registered_clock: " .. registered_clock)
+		print("registered_clock: " .. registered_clock) --07:05:47
 
 		print("Data before change:")
 		print("registered_money: " .. registered_money)
@@ -661,12 +661,10 @@ You can test the program by activating the "test_IAP" function.
 						if (registered_money == "0.00994753") then
 							if (first_date == "08 Feb 2022") then
 								if (last_date == "09 Feb 2022") then
-									if (first_clock == "07:00:00") then
-										if (last_clock == "07:10:00") then
-											if TIME_TEST_IS_OK then
-												if DATE_TEST_IS_OK then
-													result_of_test = true
-												end
+									if TIME_TEST_IS_OK then
+										if DATE_TEST_IS_OK then
+											if is_time_in_duration(registered_clock, first_clock, last_clock) then
+												result_of_test = true
 											end
 										end
 									end
