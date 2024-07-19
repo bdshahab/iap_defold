@@ -578,7 +578,6 @@ You can test the program by activating the "test_IAP" function.
 		logo_dialogue = gui.get_node("logo_dialogue")
 	end
 
-
 	function is_valid_time_format(time_str)
 		local _, count = string.gsub(time_str, ":", "")
 		if count ~= 2 then
@@ -606,7 +605,7 @@ You can test the program by activating the "test_IAP" function.
 		if tonumber(date_parts[2]) ~= nil and #date_parts[2] ~= 3 then
 			return false
 		end
-		if #date_parts[3] < 4 then -- #tostring(os.date("%Y"))
+		if tonumber(date_parts[3]) == nil or #date_parts[3] < 4 then -- #tostring(os.date("%Y"))
 			return false
 		end
 		return true
