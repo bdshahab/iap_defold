@@ -185,6 +185,9 @@ You can test the program by activating the "test_IAP" function.
 		handle_hovering(paste_txid, action)
 		handle_hovering(help, action)
 		handle_hovering(copy_all, action)
+		if handle_clicking(selected_payment_icon, action_id, action) then
+			sys.open_url("https://duckduckgo.com/?q=cryptocurrency " .. selected_payment)
+		end
 		if handle_clicking(copy_address, action_id, action) then
 			clipboard.copy(gui.get_text(text_address))
 		end
@@ -317,7 +320,13 @@ You can test the program by activating the "test_IAP" function.
 		msg.post("main:/loader#loader", "unload_scene", { scene = "main:/loader#payment" })
 		msg.post("main:/loader#loader", "load_scene", { scene = "main:/loader#bought" })
 		if TESTING then
-			print("TEST was 100% successful.")
+			if TIME_TEST_IS_OK and DATE_TEST_IS_OK then
+				print("TEST was 100% successful.")
+			elseif TIME_TEST_IS_OK then
+				print("Date test wasn't successful.")
+			elseif DATE_TEST_IS_OK then
+				print("Time test wasn't successful.")
+			end
 		end
 	end
 
@@ -563,6 +572,7 @@ You can test the program by activating the "test_IAP" function.
 		ok_dialogue = gui.get_node("ok_dialogue")
 		back = gui.get_node("back")
 		buy = gui.get_node("buy")
+		selected_payment_icon = gui.get_node("selected_payment_icon")
 		copy_address = gui.get_node("copy_address")
 		copy_price = gui.get_node("copy_price")
 		paste_txid = gui.get_node("paste_txid")
