@@ -165,7 +165,7 @@ You can test the program by activating the "test_IAP" function.
 		end
 		get_web_content_from(PRICE_SITE, PRICE_SITE_PREFIX, price_site_middle, PRICE_SITE_SUFFIX, http_price_function)
 	end
-	
+
 	function on_input(self, action_id, action)
 		if handle_clicking(ok_dialogue, action_id, action) then
 			set_color_to_box(ok_dialogue, "ff0000")
@@ -537,12 +537,14 @@ You can test the program by activating the "test_IAP" function.
 				return tonumber(text)
 			end
 			local pattern = "%d+,*%d*.*%d+"  -- This pattern matches any number, including integers and decimals
-			return string.match(text, pattern)
+			local temp = string.match(text, pattern)
+			temp = string.gsub(temp, ",", "")
+			return tonumber(temp)
 		else
 			return text
 		end
 	end
-
+	
 	function remove_all_whitespaces(text)
 		return string.gsub(text, "%s", "")
 	end
@@ -606,7 +608,7 @@ You can test the program by activating the "test_IAP" function.
 
 		return true
 	end
-	
+
 	function is_valid_date_format(date_str)
 		local date_parts = split_string_by(date_str, " ")
 		if tonumber(date_parts[1]) == nil or tonumber(date_parts[1]) < 1 or tonumber(date_parts[1]) > 31 then
@@ -616,70 +618,69 @@ You can test the program by activating the "test_IAP" function.
 			return false
 		end
 		if tonumber(date_parts[3]) == nil or #date_parts[3] < 4 then -- #tostring(os.date("%Y"))
-			return false
-		end
-		return true
+		return false
 	end
-	
-	function test_IAP(value)
-		--[[
-		This is for testing this payment method.
-		You have to select Litecoin and set the TXID.
-		We're using this payment from this website:
-		https://litecoinblockexplorer.net/tx/61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e
-		txid = "61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e"
-		address = "LRQ6TBVXsEVPApbCY79bV1d9LR8E7JiuDd"
-		registered_clock = "07:05:47"
+	return true
+end
 
-		"Total Input" is the total amount of money the user paid.
-		"Transaction Fee" is the amount of money the user paid for that transaction.
-		"Total Output" is the amount of money the producer receives.
-		In summary:
-		Total Output == Total Input - Transaction Fee
-		]]
-		if not value then
-			return
-		end
+function test_IAP(value)
+	--[[
+	This is for testing this payment method.
+	You have to select Litecoin and set the TXID.
+	We're using this payment from this website:
+	https://litecoinblockexplorer.net/tx/61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e
+	txid = "61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e"
+	address = "LRQ6TBVXsEVPApbCY79bV1d9LR8E7JiuDd"
+	registered_clock = "07:05:47"
 
-		print("Data:")
-		print("PRICE_TEST_IS_OK: " .. tostring(PRICE_TEST_IS_OK))
-		print("registered_address: " .. registered_address)
-		print("registered_txid: " .. registered_txid)
-		print("registered_clock: " .. registered_clock) --07:05:47
+	"Total Input" is the total amount of money the user paid.
+	"Transaction Fee" is the amount of money the user paid for that transaction.
+	"Total Output" is the amount of money the producer receives.
+	In summary:
+	Total Output == Total Input - Transaction Fee
+	]]
+	if not value then
+		return
+	end
 
-		print("Data before change:")
-		print("registered_money: " .. registered_money)
-		print("first_date: " .. first_date)
-		print("last_date: " .. last_date)
-		print("first_clock: " .. first_clock)
-		print("last_clock: " .. last_clock)
+	print("Data:")
+	print("PRICE_TEST_IS_OK: " .. tostring(PRICE_TEST_IS_OK))
+	print("registered_address: " .. registered_address)
+	print("registered_txid: " .. registered_txid)
+	print("registered_clock: " .. registered_clock) --07:05:47
 
-		registered_money = "0.00994753"
-		first_date = "08 Feb 2022"
-		last_date = "09 Feb 2022"
-		first_clock = "07:00:00"
-		last_clock = "07:10:00"
+	print("Data before change:")
+	print("registered_money: " .. registered_money)
+	print("first_date: " .. first_date)
+	print("last_date: " .. last_date)
+	print("first_clock: " .. first_clock)
+	print("last_clock: " .. last_clock)
 
-		print("Data After change:")
-		print("registered_money: " .. registered_money)
-		print("first_date: " .. first_date)
-		print("last_date: " .. last_date)
-		print("first_clock: " .. first_clock)
-		print("last_clock: " .. last_clock)
-		print("Result of test:")
-		local result_of_test = false
-		if (registered_address == "LRQ6TBVXsEVPApbCY79bV1d9LR8E7JiuDd") then
-			if (registered_txid == "61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e") then
-				if (registered_clock == "07:05:47") then
-					if (registered_address == "LRQ6TBVXsEVPApbCY79bV1d9LR8E7JiuDd") then
-						if (registered_money == "0.00994753") then
-							if (first_date == "08 Feb 2022") then
-								if (last_date == "09 Feb 2022") then
-									if TIME_TEST_IS_OK then
-										if DATE_TEST_IS_OK then
-											if is_time_in_duration(registered_clock, first_clock, last_clock) then
-												result_of_test = true
-											end
+	registered_money = "0.00994753"
+	first_date = "08 Feb 2022"
+	last_date = "09 Feb 2022"
+	first_clock = "07:00:00"
+	last_clock = "07:10:00"
+
+	print("Data After change:")
+	print("registered_money: " .. registered_money)
+	print("first_date: " .. first_date)
+	print("last_date: " .. last_date)
+	print("first_clock: " .. first_clock)
+	print("last_clock: " .. last_clock)
+	print("Result of test:")
+	local result_of_test = false
+	if (registered_address == "LRQ6TBVXsEVPApbCY79bV1d9LR8E7JiuDd") then
+		if (registered_txid == "61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e") then
+			if (registered_clock == "07:05:47") then
+				if (registered_address == "LRQ6TBVXsEVPApbCY79bV1d9LR8E7JiuDd") then
+					if (registered_money == "0.00994753") then
+						if (first_date == "08 Feb 2022") then
+							if (last_date == "09 Feb 2022") then
+								if TIME_TEST_IS_OK then
+									if DATE_TEST_IS_OK then
+										if is_time_in_duration(registered_clock, first_clock, last_clock) then
+											result_of_test = true
 										end
 									end
 								end
@@ -689,19 +690,20 @@ You can test the program by activating the "test_IAP" function.
 				end
 			end
 		end
-		if not TIME_TEST_IS_OK then
-			print("time format is not correct.")
-		end
-		if not DATE_TEST_IS_OK then
-			print("date format is not correct.")
-		end
-		if result_of_test and PRICE_TEST_IS_OK then
-			print("Congratulations! The test was successful!")
-		elseif result_of_test then
-			print("Only Verifying part was successful.")
-		elseif PRICE_TEST_IS_OK then
-			print("Only the price test from the main site was successful.")
-		else
-			print("Sorry! The test was unsuccessful.")
-		end
 	end
+	if not TIME_TEST_IS_OK then
+		print("time format is not correct.")
+	end
+	if not DATE_TEST_IS_OK then
+		print("date format is not correct.")
+	end
+	if result_of_test and PRICE_TEST_IS_OK then
+		print("Congratulations! The test was successful!")
+	elseif result_of_test then
+		print("Only Verifying part was successful.")
+	elseif PRICE_TEST_IS_OK then
+		print("Only the price test from the main site was successful.")
+	else
+		print("Sorry! The test was unsuccessful.")
+	end
+end
