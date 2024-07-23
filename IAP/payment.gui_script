@@ -532,7 +532,7 @@ You can test the program by activating the "test_IAP" function.
 	end
 
 	function get_just_number(text)
-		if text ~= nil then
+		if text ~= nil and #text ~= 0 then
 			if tonumber(text) ~= nil then
 				return tonumber(text)
 			end
@@ -541,7 +541,7 @@ You can test the program by activating the "test_IAP" function.
 			temp = string.gsub(temp, ",", "")
 			return tonumber(temp)
 		else
-			return text
+			return nil
 		end
 	end
 	
