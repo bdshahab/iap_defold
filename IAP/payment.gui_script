@@ -231,7 +231,7 @@ You can test the program by activating the "test_IAP" function.
 	end
 
 	function connection_status(code)
-		if not(code == 200 or code == 304) then
+		if not(code >= 200 and code < 400) then
 			if registered_txid ~= "" then
 				show_dialogue("", "internet_lost", MESSAGE_LOST_CONNECTION)
 			end
