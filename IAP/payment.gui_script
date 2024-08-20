@@ -108,6 +108,10 @@ You can test the program by activating the "test_IAP" function.
 	function http_key_data_function(self, _, response)
 		connection_status(response.status)
 		local text = response.response
+		if text == "" or text == nil then
+			show_dialogue("back", "internet_lost", MESSAGE_LOST_CONNECTION)
+			return
+		end
 		local num = 1
 		-- iterate over each line in the string text, capturing the content of each line without the newline character
 		for line in text:gmatch("(.-)\n") do
@@ -118,7 +122,6 @@ You can test the program by activating the "test_IAP" function.
 				end
 			elseif num == 2 then
 				DATE_TIME_SITE = line
-				DATE_TIME_SITE = "GGGGGGGGGGG"
 			elseif num == 3 then
 				TIME_REGEX = line
 			elseif num == 4 then
@@ -245,12 +248,12 @@ You can test the program by activating the "test_IAP" function.
 	function http_date_time_function(self, _, response)
 		connection_status(response.status)
 		local text = response.response
-		local time = string.match(text, TIME_REGEX)
-		local date = string.match(text, DATE_REGEX)
-		if time == nil or date == nil then
+		if text == "" or text == nil then
 			show_dialogue("back", "internet_lost", MESSAGE_LOST_CONNECTION)
 			return
 		end
+		local time = string.match(text, TIME_REGEX)
+		local date = string.match(text, DATE_REGEX)
 		date = string.gsub(date, DATE_REMOVE, DATE_REPLACE)
 		gui.set_visible(paste_txid, true)
 		if registered_txid == "" then
@@ -294,6 +297,10 @@ You can test the program by activating the "test_IAP" function.
 	function http_verify_function(self, _, response)
 		connection_status(response.status)	
 		local text = response.response
+		if text == "" or text == nil then
+			show_dialogue("", "internet_lost", MESSAGE_LOST_CONNECTION)
+			return
+		end
 		registered_clock = get_registered_clock(text)
 		-- test section (uncomment these for testing the verify section)
 		-- you have to set correct TXID in the app too.
@@ -382,6 +389,10 @@ You can test the program by activating the "test_IAP" function.
 		connection_status(response.status)
 		PRICE_TEST_IS_OK = false
 		local text = response.response
+		if text == "" or text == nil then
+			show_dialogue("back", "internet_lost", MESSAGE_LOST_CONNECTION)
+			return
+		end
 		local number = get_just_number(get_price_from_web(text))
 		if number ~= nil then
 			PRICE_TEST_IS_OK = true
