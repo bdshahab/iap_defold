@@ -6,7 +6,7 @@ You can test the program by activating the "test_IAP" function.
 	Also, the payment type must be Litecoin.
 	https://litecoinblockexplorer.net/tx/61a7667851da2d1395c26f4eaba7a14a3c1355ba80e1b35678327619a115d21e
 	]]
-	local TESTING = false
+	local TESTING = not false
 	local PRICE_TEST_IS_OK = false
 	local DATE_TEST_IS_OK = false
 	local TIME_TEST_IS_OK = false
@@ -204,7 +204,7 @@ You can test the program by activating the "test_IAP" function.
 		if handle_clicking(back, action_id, action) then
 			go_back()
 		end
-		if handle_clicking(buy, action_id, action) then
+		if handle_clicking(buy, action_id, action) and gui.get_visible(buy) then
 			go_next()
 		end
 		if handle_clicking(help, action_id, action) then
@@ -370,7 +370,7 @@ You can test the program by activating the "test_IAP" function.
 			get_date_time()
 		end
 	end
-	
+
 	function http_price_function(self, _, response)
 		connection_status(response.status)
 		PRICE_TEST_IS_OK = false
