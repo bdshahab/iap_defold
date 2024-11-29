@@ -175,7 +175,7 @@ You can test the program by activating the "test_IAP" function.
 			set_color_to_box(ok_dialogue, "ff0000")
 			if dialogue_action == "" then
 				hide_dialogue()
-			elseif dialogue_action == "back" then
+			else
 				go_back()
 			end
 		end
